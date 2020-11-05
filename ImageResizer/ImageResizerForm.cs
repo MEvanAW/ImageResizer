@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace ImageResizer
 {
-    public partial class Form1 : Form
+    public partial class ImageResizerForm : Form
     {
-        public Form1()
+        public ImageResizerForm()
         {
             InitializeComponent();
+        }
+
+        private void ImageResizerForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

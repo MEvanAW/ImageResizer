@@ -13,6 +13,9 @@ namespace ImageResizer
 {
     public partial class ImageResizerForm : Form
     {
+        // atribut ukuran gambar sebelum diperkecil
+        private long size = 0;
+
         public ImageResizerForm()
         {
             InitializeComponent();
@@ -29,22 +32,39 @@ namespace ImageResizer
 
         }
 
+        // Event ketika tombol pilih-gambar diklik
         private void pilihGambarButton_Click(object sender, EventArgs e)
         {
-            namaGambarLabel.Text = "Nama Gambar";
-            ukuranBerkasLabel.Text = "Ukuran Berkas";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                // Memuat gambar pada pictureBox
                 pictureBox.Load(openFileDialog.FileName);
-                namaGambarLabel.Text = namaGambarLabel.Text + ": " + openFileDialog.FileName;
-                var size = new FileInfo(openFileDialog.FileName).Length;
-                var sizekb = size / 1000;
-                ukuranBerkasLabel.Text = ukuranBerkasLabel.Text + ": " + sizekb + " KB";
+                // Mengatur agar gambar pada pictureBox tidak stretch dan berada di tengah
                 var imageSize = pictureBox.Image.Size;
                 var fitSize = pictureBox.ClientSize;
                 pictureBox.SizeMode = imageSize.Width > fitSize.Width || imageSize.Height > fitSize.Height ?
                     PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage;
+                // Memuat nama gambar pada label-nama-gambar
+                namaGambarLabel.Text = "Nama Gambar: " + openFileDialog.FileName;
+                // Menghitung ukuran berkas dalam KB
+                size = new FileInfo(openFileDialog.FileName).Length;
+                double sizeKb = size / 1024;
+                // Menampilkan ukuran berkas pada label-ukuran-berkas
+                ukuranBerkasLabel.Text = "Ukuran Berkas: " + sizeKb + " KB";
+                // Menghitung dan menampilkan perkiraan hasil ukuran berkas pada labelnya
+                double percent = Convert.ToDouble((comboBox.SelectedItem as string).Substring(0, 2)) / 100;
+                sizeKb = (long)(sizeKb * percent);
+                perkiraanHasilUkuranLabel.Text = "Perkiraan hasil ukuran berkas: " + sizeKb + " KB";
             }
+        }
+
+        // Event ketika persen pengecilan diganti
+        private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Menghitung dan menampilkan perkiraan hasil ukuran berkas pada labelnya
+            double percent = Convert.ToDouble((comboBox.SelectedItem as string).Substring(0, 2)) / 100;
+            double sizeKb = size / 1024 * percent;
+            perkiraanHasilUkuranLabel.Text = "Perkiraan hasil ukuran berkas: " + sizeKb + " KB";
         }
     }
 }

@@ -5,11 +5,13 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Firebase.Storage;
-using Firebase.Database;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ImageResizer
 {
@@ -58,6 +60,8 @@ namespace ImageResizer
             }
         }
 
+
+
         // Event ketika persen pengecilan diganti
         private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -85,8 +89,20 @@ namespace ImageResizer
             // await the task to wait until upload completes and get the download url
             string urlGambarUser = await task;
 
+            //upload url ke realtime firebase
+            var json = JsonConvert.SerializeObject(urlGambarUser);
+            var request = WebRequest.CreateHttp("https://kursusku-66845.firebaseio.com/imageResizer/.json");
+            request.Method = "POST";
+            var buffer = Encoding.UTF8.GetBytes(json);
+            request.GetRequestStream().Write(buffer, 0, buffer.Length);
+            var response = request.GetResponse();
+            json = (new StreamReader(response.GetResponseStream())).ReadToEnd();
+            dynamic data = JObject.Parse(json);
+            string namaFile = data.name;
+
             // Memuat gambar pada pictureBox
             pictureBox.Load(url);
+
             // Mengatur agar gambar pada pictureBox tidak stretch dan berada di tengah
             var imageSize = pictureBox.Image.Size;
             var fitSize = pictureBox.ClientSize;

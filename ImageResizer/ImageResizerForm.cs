@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Firebase.Storage;
+using Firebase.Database;
 
 namespace ImageResizer
 {
@@ -15,6 +17,7 @@ namespace ImageResizer
     {
         // atribut ukuran gambar sebelum diperkecil
         private long size = 0;
+        private string url = "";
 
         public ImageResizerForm()
         {
@@ -37,14 +40,8 @@ namespace ImageResizer
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                // Memuat gambar pada pictureBox
-                pictureBox.Load(openFileDialog.FileName);
-                // Mengatur agar gambar pada pictureBox tidak stretch dan berada di tengah
-                var imageSize = pictureBox.Image.Size;
-                var fitSize = pictureBox.ClientSize;
-                pictureBox.SizeMode = imageSize.Width > fitSize.Width || imageSize.Height > fitSize.Height ?
-                    PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage;
                 // Memuat nama gambar pada label-nama-gambar
+                url = openFileDialog.FileName;
                 namaGambarLabel.Text = "Nama Gambar: " + openFileDialog.FileName;
                 // Menghitung ukuran berkas dalam KB
                 size = new FileInfo(openFileDialog.FileName).Length;
@@ -55,6 +52,9 @@ namespace ImageResizer
                 double percent = Convert.ToDouble((comboBox.SelectedItem as string).Substring(0, 2)) / 100;
                 sizeKb = (long)(sizeKb * percent);
                 perkiraanHasilUkuranLabel.Text = "Perkiraan hasil ukuran berkas: " + sizeKb + " KB";
+
+                // Upload file ke storage firebase
+                UploadFiles(url);
             }
         }
 
@@ -65,6 +65,33 @@ namespace ImageResizer
             double percent = Convert.ToDouble((comboBox.SelectedItem as string).Substring(0, 2)) / 100;
             double sizeKb = size / 1024 * percent;
             perkiraanHasilUkuranLabel.Text = "Perkiraan hasil ukuran berkas: " + sizeKb + " KB";
+        }
+
+        //Method untuk upload file ke storage firebase
+        private async void UploadFiles(string url)
+        {
+            // Get any Stream - it can be FileStream, MemoryStream or any other type of Stream
+            var stream = File.Open(@"" + url, FileMode.Open);
+
+            // Construct FirebaseStorage, path to where you want to upload the file and Put it there
+            var task = new FirebaseStorage("kursusku-66845.appspot.com")
+                .Child("imageResizerHasil")
+                .Child(url)
+                .PutAsync(stream);
+
+            // Track progress of the upload
+            // task.Progress.ProgressChanged += (s, e) => ukuranBerkasLabel.Text = $"Progress: {e.Percentage} %";
+
+            // await the task to wait until upload completes and get the download url
+            string urlGambarUser = await task;
+
+            // Memuat gambar pada pictureBox
+            pictureBox.Load(url);
+            // Mengatur agar gambar pada pictureBox tidak stretch dan berada di tengah
+            var imageSize = pictureBox.Image.Size;
+            var fitSize = pictureBox.ClientSize;
+            pictureBox.SizeMode = imageSize.Width > fitSize.Width || imageSize.Height > fitSize.Height ?
+                PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage;
         }
     }
 }

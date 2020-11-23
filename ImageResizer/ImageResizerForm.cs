@@ -125,6 +125,7 @@ namespace ImageResizer
         private void lakukanButton_Click(object sender, EventArgs e)
         {
             //get url from rest API
+            persen = Convert.ToInt32((comboBox.SelectedItem as string).Substring(0, 2));
             string returnString;
             string urlApi = "http://127.0.0.1:5000/" + persen + "/" + size + "/" + namaFile;
             var client = new RestClient(urlApi);

@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Firebase.Storage;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RestSharp;
 
 namespace ImageResizer
 {
@@ -20,6 +21,9 @@ namespace ImageResizer
         // atribut ukuran gambar sebelum diperkecil
         private long size = 0;
         private string url = "";
+        private int sizeGambar = 0;
+        private int persen = 0;
+        private string namaFile = "";
 
         public ImageResizerForm()
         {
@@ -55,8 +59,11 @@ namespace ImageResizer
                 sizeKb = (long)(sizeKb * percent);
                 perkiraanHasilUkuranLabel.Text = "Perkiraan hasil ukuran berkas: " + sizeKb + " KB";
 
+                persen = Convert.ToInt32((comboBox.SelectedItem as string).Substring(0, 2));
+                sizeGambar = Convert.ToInt32(size);
+
                 // Upload file ke storage firebase
-                UploadFiles(url);
+                UploadFiles(url, persen, sizeGambar);
             }
         }
 
@@ -72,7 +79,7 @@ namespace ImageResizer
         }
 
         //Method untuk upload file ke storage firebase
-        private async void UploadFiles(string url)
+        private async void UploadFiles(string url, int persen, int size)
         {
             // Get any Stream - it can be FileStream, MemoryStream or any other type of Stream
             var stream = File.Open(@"" + url, FileMode.Open);
@@ -98,7 +105,7 @@ namespace ImageResizer
             var response = request.GetResponse();
             json = (new StreamReader(response.GetResponseStream())).ReadToEnd();
             dynamic data = JObject.Parse(json);
-            string namaFile = data.name;
+            namaFile = data.name;
 
             // Memuat gambar pada pictureBox
             pictureBox.Load(url);
@@ -108,6 +115,24 @@ namespace ImageResizer
             var fitSize = pictureBox.ClientSize;
             pictureBox.SizeMode = imageSize.Width > fitSize.Width || imageSize.Height > fitSize.Height ?
                 PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage;
+        }
+
+        private void downloadLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(downloadLinkLabel.Text);
+        }
+
+        private void lakukanButton_Click(object sender, EventArgs e)
+        {
+            //get url from rest API
+            string returnString;
+            string urlApi = "http://127.0.0.1:5000/" + persen + "/" + size + "/" + namaFile;
+            var client = new RestClient(urlApi);
+            var request2 = new RestRequest(Method.GET);
+            IRestResponse response2 = client.Execute(request2);
+            JsonObject rajaObj = (JsonObject)SimpleJson.DeserializeObject(response2.Content);
+            returnString = (string)rajaObj["url"];
+            downloadLinkLabel.Text = returnString;
         }
     }
 }

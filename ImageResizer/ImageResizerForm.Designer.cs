@@ -47,28 +47,28 @@
             // 
             this.pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureBox.Enabled = false;
-            this.pictureBox.Location = new System.Drawing.Point(11, 10);
+            this.pictureBox.Location = new System.Drawing.Point(12, 12);
             this.pictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(569, 288);
+            this.pictureBox.Size = new System.Drawing.Size(640, 360);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
             // namaGambarLabel
             // 
             this.namaGambarLabel.AutoSize = true;
-            this.namaGambarLabel.Location = new System.Drawing.Point(113, 308);
+            this.namaGambarLabel.Location = new System.Drawing.Point(127, 385);
             this.namaGambarLabel.Name = "namaGambarLabel";
-            this.namaGambarLabel.Size = new System.Drawing.Size(104, 17);
+            this.namaGambarLabel.Size = new System.Drawing.Size(117, 20);
             this.namaGambarLabel.TabIndex = 2;
             this.namaGambarLabel.Text = "Nama Gambar:";
             // 
             // pilihGambarButton
             // 
-            this.pilihGambarButton.Location = new System.Drawing.Point(11, 303);
+            this.pilihGambarButton.Location = new System.Drawing.Point(12, 379);
             this.pilihGambarButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pilihGambarButton.Name = "pilihGambarButton";
-            this.pilihGambarButton.Size = new System.Drawing.Size(97, 26);
+            this.pilihGambarButton.Size = new System.Drawing.Size(109, 32);
             this.pilihGambarButton.TabIndex = 3;
             this.pilihGambarButton.Text = "Pilih Gambar";
             this.pilihGambarButton.UseVisualStyleBackColor = true;
@@ -77,27 +77,27 @@
             // ukuranBerkasLabel
             // 
             this.ukuranBerkasLabel.AutoSize = true;
-            this.ukuranBerkasLabel.Location = new System.Drawing.Point(7, 340);
+            this.ukuranBerkasLabel.Location = new System.Drawing.Point(8, 425);
             this.ukuranBerkasLabel.Name = "ukuranBerkasLabel";
-            this.ukuranBerkasLabel.Size = new System.Drawing.Size(106, 17);
+            this.ukuranBerkasLabel.Size = new System.Drawing.Size(119, 20);
             this.ukuranBerkasLabel.TabIndex = 4;
             this.ukuranBerkasLabel.Text = "Ukuran Berkas:";
             // 
             // perkecilUkuranMenjadiLabel
             // 
             this.perkecilUkuranMenjadiLabel.AutoSize = true;
-            this.perkecilUkuranMenjadiLabel.Location = new System.Drawing.Point(299, 340);
+            this.perkecilUkuranMenjadiLabel.Location = new System.Drawing.Point(336, 425);
             this.perkecilUkuranMenjadiLabel.Name = "perkecilUkuranMenjadiLabel";
-            this.perkecilUkuranMenjadiLabel.Size = new System.Drawing.Size(163, 17);
+            this.perkecilUkuranMenjadiLabel.Size = new System.Drawing.Size(180, 20);
             this.perkecilUkuranMenjadiLabel.TabIndex = 6;
             this.perkecilUkuranMenjadiLabel.Text = "Perkecil ukuran menjadi:";
             // 
             // lakukanButton
             // 
-            this.lakukanButton.Location = new System.Drawing.Point(11, 388);
+            this.lakukanButton.Location = new System.Drawing.Point(12, 485);
             this.lakukanButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lakukanButton.Name = "lakukanButton";
-            this.lakukanButton.Size = new System.Drawing.Size(569, 26);
+            this.lakukanButton.Size = new System.Drawing.Size(640, 32);
             this.lakukanButton.TabIndex = 7;
             this.lakukanButton.Text = "Lakukan";
             this.lakukanButton.UseVisualStyleBackColor = true;
@@ -106,18 +106,18 @@
             // downloadHasilPadaLinkIniLabel
             // 
             this.downloadHasilPadaLinkIniLabel.AutoSize = true;
-            this.downloadHasilPadaLinkIniLabel.Location = new System.Drawing.Point(7, 426);
+            this.downloadHasilPadaLinkIniLabel.Location = new System.Drawing.Point(8, 532);
             this.downloadHasilPadaLinkIniLabel.Name = "downloadHasilPadaLinkIniLabel";
-            this.downloadHasilPadaLinkIniLabel.Size = new System.Drawing.Size(186, 17);
+            this.downloadHasilPadaLinkIniLabel.Size = new System.Drawing.Size(206, 20);
             this.downloadHasilPadaLinkIniLabel.TabIndex = 8;
             this.downloadHasilPadaLinkIniLabel.Text = "Download hasil pada link ini:";
             // 
             // downloadLinkLabel
             // 
             this.downloadLinkLabel.AutoSize = true;
-            this.downloadLinkLabel.Location = new System.Drawing.Point(196, 426);
+            this.downloadLinkLabel.Location = new System.Drawing.Point(220, 532);
             this.downloadLinkLabel.Name = "downloadLinkLabel";
-            this.downloadLinkLabel.Size = new System.Drawing.Size(93, 17);
+            this.downloadLinkLabel.Size = new System.Drawing.Size(104, 20);
             this.downloadLinkLabel.TabIndex = 9;
             this.downloadLinkLabel.TabStop = true;
             this.downloadLinkLabel.Text = "link download";
@@ -127,10 +127,10 @@
             // 
             this.comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox.FormattingEnabled = true;
-            this.comboBox.Location = new System.Drawing.Point(464, 337);
+            this.comboBox.Location = new System.Drawing.Point(522, 421);
             this.comboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox.Name = "comboBox";
-            this.comboBox.Size = new System.Drawing.Size(115, 24);
+            this.comboBox.Size = new System.Drawing.Size(129, 28);
             this.comboBox.TabIndex = 10;
             this.comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
             // 
@@ -142,17 +142,17 @@
             // perkiraanHasilUkuranLabel
             // 
             this.perkiraanHasilUkuranLabel.AutoSize = true;
-            this.perkiraanHasilUkuranLabel.Location = new System.Drawing.Point(11, 362);
+            this.perkiraanHasilUkuranLabel.Location = new System.Drawing.Point(12, 452);
             this.perkiraanHasilUkuranLabel.Name = "perkiraanHasilUkuranLabel";
-            this.perkiraanHasilUkuranLabel.Size = new System.Drawing.Size(201, 17);
+            this.perkiraanHasilUkuranLabel.Size = new System.Drawing.Size(221, 20);
             this.perkiraanHasilUkuranLabel.TabIndex = 11;
             this.perkiraanHasilUkuranLabel.Text = "Perkiraan hasil ukuran berkas:";
             // 
             // ImageResizerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(588, 449);
+            this.ClientSize = new System.Drawing.Size(662, 561);
             this.Controls.Add(this.perkiraanHasilUkuranLabel);
             this.Controls.Add(this.comboBox);
             this.Controls.Add(this.downloadLinkLabel);
@@ -168,7 +168,6 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "ImageResizerForm";
             this.Text = "Image Resizer";
-            this.Load += new System.EventHandler(this.ImageResizerForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

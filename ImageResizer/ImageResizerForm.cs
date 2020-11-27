@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Firebase.Storage;
 using Newtonsoft.Json;
@@ -18,16 +12,19 @@ namespace ImageResizer
 {
     public partial class ImageResizerForm : Form
     {
-        // atribut ukuran gambar sebelum diperkecil
+        // Atribut gambar sebelum diperkecil
         private long size = 0;
         private string url = "";
         private int sizeGambar = 0;
         private int persen = 0;
         private string namaFile = "";
 
+        // Konstruktor kelas ImageResizerForm
         public ImageResizerForm()
         {
+            // Membangkitkan komponen-komponen Windows Form
             InitializeComponent();
+            // Menambahkan items persen pada combo box
             comboBox.Items.AddRange(new object[] { "90%",
             "75%",
             "50%",
@@ -36,14 +33,10 @@ namespace ImageResizer
             comboBox.SelectedIndex = 0;
         }
 
-        private void ImageResizerForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
         // Event ketika tombol pilih-gambar diklik
         private void pilihGambarButton_Click(object sender, EventArgs e)
         {
+            // Jika pengguna memilih gambar (tidak cancel)
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 // Memuat nama gambar pada label-nama-gambar
@@ -54,20 +47,17 @@ namespace ImageResizer
                 double sizeKb = size / 1024;
                 // Menampilkan ukuran berkas pada label-ukuran-berkas
                 ukuranBerkasLabel.Text = "Ukuran Berkas: " + sizeKb + " KB";
-                // Menghitung dan menampilkan perkiraan hasil ukuran berkas pada labelnya
+                // Menghitung dan menampilkan perkiraan hasil ukuran berkas
                 double percent = Convert.ToDouble((comboBox.SelectedItem as string).Substring(0, 2)) / 100;
                 sizeKb = (long)(sizeKb * percent);
                 perkiraanHasilUkuranLabel.Text = "Perkiraan hasil ukuran berkas: " + sizeKb + " KB";
-
+                // Assignment atribut persen dan sizeGambar
                 persen = Convert.ToInt32((comboBox.SelectedItem as string).Substring(0, 2));
                 sizeGambar = Convert.ToInt32(size);
-
-                // Upload file ke storage firebase
+                // Upload berkas gambar ke Firebase Storage
                 UploadFiles(url, persen, sizeGambar);
             }
         }
-
-
 
         // Event ketika persen pengecilan diganti
         private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -78,7 +68,7 @@ namespace ImageResizer
             perkiraanHasilUkuranLabel.Text = "Perkiraan hasil ukuran berkas: " + sizeKb + " KB";
         }
 
-        //Method untuk upload file ke storage firebase
+        // Metode untuk unggah berkas gambar ke Firebase Storage
         private async void UploadFiles(string url, int persen, int size)
         {
             // Get any Stream - it can be FileStream, MemoryStream or any other type of Stream
@@ -90,13 +80,13 @@ namespace ImageResizer
                 .Child(url)
                 .PutAsync(stream);
 
-            // Track progress of the upload
+            // Debugging progresi unggah
             // task.Progress.ProgressChanged += (s, e) => ukuranBerkasLabel.Text = $"Progress: {e.Percentage} %";
 
-            // await the task to wait until upload completes and get the download url
+            // Membuat task menunggu sampai unggah selesai dan mendapatkan URL download
             string urlGambarUser = await task;
 
-            //upload url ke realtime firebase
+            // Unggah URL ke Firebase Realtime
             var json = JsonConvert.SerializeObject(urlGambarUser);
             var request = WebRequest.CreateHttp("https://kursusku-66845.firebaseio.com/imageResizer/.json");
             request.Method = "POST";
@@ -117,23 +107,25 @@ namespace ImageResizer
                 PictureBoxSizeMode.Zoom : PictureBoxSizeMode.CenterImage;
         }
 
-        private void downloadLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(downloadLinkLabel.Text);
-        }
-
+        // Yang terjadi ketika tombol Lakukan diklik
         private void lakukanButton_Click(object sender, EventArgs e)
         {
-            //get url from rest API
+            // GET URL unduh dari Rest API
             persen = Convert.ToInt32((comboBox.SelectedItem as string).Substring(0, 2));
             string returnString;
-            string urlApi = "http://127.0.0.1:5000/" + persen + "/" + size + "/" + namaFile;
+            string urlApi = "https://bb9b94d04123.ngrok.io/" + persen + "/" + size + "/" + namaFile;
             var client = new RestClient(urlApi);
             var request2 = new RestRequest(Method.GET);
             IRestResponse response2 = client.Execute(request2);
             JsonObject rajaObj = (JsonObject)SimpleJson.DeserializeObject(response2.Content);
             returnString = (string)rajaObj["url"];
             downloadLinkLabel.Text = returnString;
+        }
+
+        // Membuka gambar pada browser ketika link gambar diklik
+        private void downloadLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(downloadLinkLabel.Text);
         }
     }
 }

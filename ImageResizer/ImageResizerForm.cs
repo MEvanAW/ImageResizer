@@ -110,16 +110,34 @@ namespace ImageResizer
         // Yang terjadi ketika tombol Lakukan diklik
         private void lakukanButton_Click(object sender, EventArgs e)
         {
-            // GET URL unduh dari Rest API
-            persen = Convert.ToInt32((comboBox.SelectedItem as string).Substring(0, 2));
-            string returnString;
-            string urlApi = "https://bb9b94d04123.ngrok.io/" + persen + "/" + size + "/" + namaFile;
-            var client = new RestClient(urlApi);
-            var request2 = new RestRequest(Method.GET);
-            IRestResponse response2 = client.Execute(request2);
-            JsonObject rajaObj = (JsonObject)SimpleJson.DeserializeObject(response2.Content);
-            returnString = (string)rajaObj["url"];
-            downloadLinkLabel.Text = returnString;
+            if (namaFile != "")
+            {
+                try
+                {
+                    // GET URL unduh dari Rest API
+                    persen = Convert.ToInt32((comboBox.SelectedItem as string).Substring(0, 2));
+                    string returnString;
+                    string urlApi = "https://1465fae747ba.ngrok.io/" + persen + "/" + size + "/" + namaFile;
+                    var client = new RestClient(urlApi);
+                    var request2 = new RestRequest(Method.GET);
+                    IRestResponse response2 = client.Execute(request2);
+                    JsonObject rajaObj = (JsonObject)SimpleJson.DeserializeObject(response2.Content);
+                    returnString = (string)rajaObj["url"];
+                    downloadLinkLabel.Text = returnString;
+                }
+                catch
+                {
+                    MessageBox.Show("Server sedang mati atau URL ngrok belum diganti.",
+                        "Peringatan!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            else
+                MessageBox.Show("Mohon pilih gambar terlebih dahulu.",
+                        "Peringatan!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
         }
 
         // Membuka gambar pada browser ketika link gambar diklik

@@ -92,10 +92,20 @@ namespace ImageResizer
             request.Method = "POST";
             var buffer = Encoding.UTF8.GetBytes(json);
             request.GetRequestStream().Write(buffer, 0, buffer.Length);
-            var response = request.GetResponse();
-            json = (new StreamReader(response.GetResponseStream())).ReadToEnd();
-            dynamic data = JObject.Parse(json);
-            namaFile = data.name;
+            try
+            {
+                var response = request.GetResponse();
+                json = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                dynamic data = JObject.Parse(json);
+                namaFile = data.name;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message,
+                    "Error!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
 
             // Memuat gambar pada pictureBox
             pictureBox.Load(url);
